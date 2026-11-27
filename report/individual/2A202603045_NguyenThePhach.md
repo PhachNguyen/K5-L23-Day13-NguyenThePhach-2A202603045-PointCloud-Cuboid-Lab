@@ -1,14 +1,14 @@
 # Báo cáo Day 13 — Nguyễn Thế Phách, 2A202603045
 
-> Báo cáo dùng số liệu từ Bảng A và phiếu tự kiểm hiện có trong `submission/`, cùng ảnh preview trong `work/xem/`. Những việc không có ghi chép được đánh dấu rõ, không suy đoán. Ảnh preview không thay thế ảnh chụp CVAT cần nộp.
+> Báo cáo này tổng hợp số liệu từ Bảng A, phiếu tự kiểm và ảnh đã lưu. Những việc tôi chưa ghi lại hoặc chưa kiểm chứng được sẽ được nói rõ; ảnh preview không thay cho ảnh chụp CVAT.
 
 ## 1. Kết luận trước
 
-MSSV: `2A202603045`. Task: `D13-2A202603045`. Hệ điều hành: Windows 11. Tôi đã gán nhãn thủ công 10 frame: `s01f01`, `s01f26`, `s02f02`, `s02f28`, `s03f14`, `s03f44`, `s04f06`, `s04f27`, `s05f11`, `s05f28`; mỗi frame có 7 camera. Trình duyệt là Chrome; phiên bản trình duyệt và CVAT không được ghi lại. MSSV bạn ngồi cạnh và kết quả kiểm chéo chưa được lưu trong repo.
+MSSV: `2A202603045`. Task: `D13-2A202603045`. Tôi dùng Windows 11 và Chrome để gán nhãn thủ công 10 frame: `s01f01`, `s01f26`, `s02f02`, `s02f28`, `s03f14`, `s03f44`, `s04f06`, `s04f27`, `s05f11`, `s05f28`. Mỗi frame có 7 camera. Tôi chưa ghi lại phiên bản Chrome/CVAT, MSSV của bạn ngồi cạnh hay kết quả kiểm chéo.
 
-Bảng A hiện có **86 cuboid**. Ít cuboid nhất trong một frame là **5** (`s02f02` và `s03f44`). Phiếu tự kiểm mới nhất gắn cờ **11/86 cuboid**; cảnh báo là gợi ý để xem lại, không khẳng định hộp sai. Tôi đã hoàn thành vẽ thủ công; cần đối chiếu trực tiếp các cờ trước khi chốt chất lượng.
+Bảng A hiện có **86 cuboid**. `s02f02` và `s03f44` là hai frame ít hộp nhất, mỗi frame có 5. Phiếu tự kiểm còn gắn cờ **11/86 cuboid**. Đây là các chỗ cần xem lại, không có nghĩa là hộp chắc chắn sai.
 
-Trong CVAT, tôi dùng Shape để đặt từng hộp và nháy đúp để kết thúc. Ở Top tôi chỉnh tâm, dài/rộng và yaw; ở Side/Front tôi kiểm tra độ cao và đáy. Tôi bật Cuboid orientation, đối chiếu camera rồi Save. Không dùng model để tạo nhãn.
+Trong CVAT, tôi dùng Shape để vẽ cuboid, chỉnh tâm, kích thước và yaw ở Top, rồi xem độ cao và đáy ở Side/Front. Tôi bật Cuboid orientation, đối chiếu với camera và bấm Save. Tôi không dùng model để tạo nhãn.
 
 ## 2. Đọc frame (Bước 2)
 
@@ -19,9 +19,9 @@ Hai frame đọc kỹ: `s01f01` và `s01f26`. Theo tọa độ VF, phía trướ
 | `s01f01` | Giao lộ, mặt đường nhìn gần phẳng; ước lượng thấp hơn LiDAR khoảng 1,8–2,0 m theo các hộp có ground estimate. | Xe xa nhất trong bảng khoảng 41,7 m. | Xe con, xe tải, xe hai bánh ở nhiều làn và hướng giao cắt. | Xe nhỏ ở xa và returns nền quanh cây/ven đường khó phân loại. |
 | `s01f26` | Đoạn đường thẳng, mặt đường gần phẳng; ground estimate quanh 1,7 m dưới LiDAR. | Xe xa nhất trong bảng khoảng 45,4 m. | Xe con, xe buýt, xe tải và người đi bộ; camera thấy xe ở phía trước và các làn bên. | Đối tượng xa hoặc bị xe gần che khuất có ít điểm, khó xác định đủ kích thước. |
 
-Camera cho biết màu sắc/ngoại hình, phần nhìn thấy của vật và quan hệ che khuất. LiDAR cho biết khoảng cách 3D theo mét, mật độ returns trên bề mặt và hình dạng không gian/độ cao tương đối.
+Camera giúp nhận ra loại vật, màu sắc và phần bị che. LiDAR cho biết vị trí, khoảng cách và hình dạng 3D của vật.
 
-Tám frame còn lại được xem qua preview. Hướng trước trong BEV vẫn ở phía trên; các điểm cần chú ý là vật xa thưa điểm và returns nền ven đường.
+Tôi xem tám frame còn lại qua preview. Trên BEV, phía trước vẫn hướng lên trên. Ở các frame này, vật ở xa và điểm nền ven đường thường khó phân biệt.
 
 | Frame | Tóm tắt |
 |---|---|
@@ -42,18 +42,18 @@ Tám frame còn lại được xem qua preview. Hướng trước trong BEV vẫ
 | Xe buýt | `s02f02`, #1 | Bus | 267,8° | `z_bottom = −1,724 m`, ground gap 0,12 m | 12,017 × 3,060 × 3,027 m; trong khoảng Bus tham chiếu. |
 | Xe hai bánh | `s01f01`, #11 | Cyclist | 260,1° | `z_bottom = −1,463 m`, ground gap 0,23 m | 2,017 × 0,893 × 1,684 m; trong khoảng Cyclist tham chiếu. |
 
-Các con số lấy từ Bảng A/phiếu tự kiểm; xác nhận mũi tên đúng đầu xe và đã kiểm đủ Top/Side/Front cần đối chiếu trực tiếp trên CVAT. Repo không có ghi chép kết quả vòng hiệu chuẩn, danh sách vật đã bỏ qua hay MSSV người kiểm chéo, nên không kết luận các việc đó đã diễn ra.
+Các số liệu lấy từ Bảng A và phiếu tự kiểm. Tôi chưa lưu kết quả vòng hiệu chuẩn, danh sách vật bỏ qua hay thông tin người kiểm chéo; cần bổ sung theo đúng những gì đã làm. Hướng mũi tên và các góc Top/Side/Front cũng nên kiểm tra lại trực tiếp trên CVAT.
 
 ## 4. Bốn hiện tượng chất lượng (Bước 4)
 
-Nguyên nhân dưới đây là giả thuyết từ preview và point cloud, không phải kết luận về cảm biến.
+Những nhận xét dưới đây là điều tôi quan sát được; nguyên nhân chỉ là phỏng đoán, không phải kết luận về cảm biến.
 
 | Hiện tượng | Frame / nguồn quan sát | Giả thuyết và dấu hiệu | Ảnh hưởng khi gán; minh chứng ảnh |
 |---|---|---|---|
 | Bóng che | `s02f02`; ảnh CVAT `t4-1-bong-che.png` | Xe buýt trong camera che một phần xe/vùng phía sau; quan sát cả camera và point cloud. | Ảnh minh họa hiện tượng che khuất; chỉ gán hộp cho phần vật thể có đủ căn cứ. |
 | Thưa ở xa | `s02f28`, Car #3 (CVAT ID #39); Bảng A và ảnh CVAT người học cung cấp | Xe xa nhất cách LiDAR 45,99 m, có 63 returns trong hộp; point cloud thưa hơn rõ so với xe gần. | Ảnh CVAT cho thấy cuboid và các view 3D/Top/Side/Front; không nới hộp để gom các returns ngoài xe. Ảnh này đã lưu thành `t4-2-thua-o-xa.png`. |
 | Phản xạ thấp / ít returns | `s01f01`; ảnh CVAT `t4-3-phan-xa-thap.png` | Vùng được khoanh có returns LiDAR thưa; ảnh camera cần được đối chiếu để xác định vật thể. Không thể kết luận riêng do phản xạ thấp; xa/che khuất cũng có thể là nguyên nhân. | Dùng làm ví dụ vùng ít returns, ghi nguyên nhân là giả thuyết. |
-| Điểm lạ | `s02f28`; ảnh CVAT `t4-4-diem-la.png` | Khung đỏ khoanh một patch returns cô lập cần kiểm tra; chỉ xem là ứng viên, chưa xác nhận chắc là nhiễu hay vật thể nhỏ. | Không tạo cuboid cho các return này. |
+| Điểm lạ | `s02f28`; ảnh CVAT `t4-4-diem-la.png` | Khung đỏ khoanh một cụm điểm trông có vẻ rời khỏi các cụm khác. Tôi chưa xác định được đó là nhiễu hay vật thể nhỏ. | Không tạo cuboid khi chưa nhận ra vật thể. |
 
 ## 5. Số từ cuboid của tôi (Bước 5)
 
@@ -72,7 +72,7 @@ Xe con `s01f01` #1 có kích thước 4,498 × 1,726 × 1,437 m, trong khoảng 
 | `s01f01` #5 | 26,05 m | 114 |
 | `s02f28` #3 | 45,99 m | 63 |
 
-Trong bốn mẫu này, khoảng cách tăng gần 11 lần thì số điểm trong hộp giảm khoảng 46 lần. Đây là các xe/frame khác nhau nên chỉ minh họa xu hướng; kích thước, góc quét và che khuất cũng ảnh hưởng. Xu hướng giảm theo khoảng cách phù hợp với đường cong tham chiếu trên lớp, nhưng số điểm từng hộp dao động.
+Trong bốn ví dụ này, xe càng xa thì số điểm trong hộp càng ít. Đây là các xe ở những frame khác nhau nên chỉ dùng để tham khảo; kích thước hộp và vật che cũng ảnh hưởng đến số điểm.
 
 Phiếu tự kiểm hiện tại còn **11/86** hộp có cờ: điểm sát mép ở một số Car/Cyclist/Truck; đáy cao hơn mặt đường ở một số Car/Cyclist; kích thước ngoài khoảng ở một số Cyclist và Bus. Repo không lưu lịch sử chỉnh sửa CVAT nên không xác định được hai hộp nào đã sửa hay lý do giữ từng cờ. Cần đối chiếu trực tiếp các hộp còn cờ và ghi lý do theo kết quả thực tế.
 
@@ -80,14 +80,14 @@ Thông tin kiểm chéo (MSSV, hai số được đối chiếu, kết quả) ch
 
 ## 6. Ý nghĩa của nhãn, cách dùng AI và điều còn chưa chắc
 
-Nhãn 3D dùng mét vì vị trí, kích thước và khoảng cách cần cùng đơn vị vật lý giữa các cảm biến; pixel chỉ biểu diễn vị trí trên một ảnh và thay đổi theo góc nhìn/tiêu cự. Vật thưa điểm cần quy tắc riêng vì returns giảm theo khoảng cách hoặc che khuất; dùng ngưỡng điểm cố định có thể bỏ nhầm vật thật hoặc khiến người gán nới hộp quá mức.
+Nhãn 3D dùng mét để vị trí và kích thước có cùng đơn vị thực tế. Camera là ảnh 2D nên không cho biết trực tiếp khoảng cách. Vật ở xa hoặc bị che thường có ít điểm LiDAR hơn; vì vậy không nên chỉ dựa vào số điểm để quyết định có vẽ hộp hay không.
 
 - Công cụ: ChatGPT/Codex.
 - Câu hỏi chính: cách dùng cuboid 3D trong CVAT (Shape, Top/Side/Front, chỉnh kích thước/yaw, hướng hộp và occlusion) cùng các lệnh repo.
 - Cách dùng: tham khảo để hiểu thao tác; cuboid trong task được tự vẽ thủ công, không dùng model tạo nhãn.
 
-Điều còn chưa chắc là các cảnh báo còn lại, nhất là hộp Cyclist ít điểm, điểm sát mép và Bus `s04f06`; cần xem trực tiếp point cloud/camera trước khi quyết định giữ hay sửa. Repo không có ghi chép vòng hiệu chuẩn, kiểm chéo hay danh sách vật bỏ qua. Chưa có lỗi phát hiện sau hạn được ghi nhận.
+Tôi vẫn cần xem lại các hộp còn bị gắn cờ, nhất là hộp Cyclist ít điểm, hộp có nhiều điểm sát mép và Bus `s04f06`. Tôi chưa lưu kết quả kiểm chéo, vòng hiệu chuẩn hay danh sách vật đã bỏ qua. Chưa ghi nhận lỗi phát hiện sau hạn.
 
 ### Ảnh minh chứng cần lưu trong `report/individual/images/`
 
-Trong thư mục hiện có 11 file ảnh: bốn ảnh T1; ba ảnh T2; và bốn ảnh T4 (`t4-1-bong-che.png` frame `s02f02`, `t4-2-thua-o-xa.png` frame `s02f28`, `t4-3-phan-xa-thap.png` frame `s01f01`, `t4-4-diem-la.png` frame `s02f28`). Hai ảnh Top T1 có chú thích hướng. Các khoanh đỏ trên T4-3/T4-4 là vùng ứng viên để thảo luận; không khẳng định nguyên nhân cảm biến. Ảnh Cyclist dự phòng được lưu ngoài thư mục nộp. Ảnh xem trước trong `work/xem/` không thay thế ảnh CVAT.
+Thư mục ảnh có đủ 11 file theo danh sách nộp: bốn ảnh T1, ba ảnh T2 và bốn ảnh T4. T4-3 và T4-4 có khoanh vùng để người chấm xem; nguyên nhân chưa được xác nhận. Hai ảnh Top T1 có chú thích hướng. Ảnh preview trong `work/xem/` không thay thế ảnh CVAT.
