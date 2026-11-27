@@ -50,10 +50,10 @@ Nguyên nhân dưới đây là giả thuyết từ preview và point cloud, kh�
 
 | Hiện tượng | Frame / nguồn quan sát | Giả thuyết và dấu hiệu | Ảnh hưởng khi gán; minh chứng ảnh |
 |---|---|---|---|
-| Bóng che | `s02f02`; ảnh CVAT `t4-1-bong-che.png` | Xe buýt trong camera che một phần xe/vùng phía sau; quan sát cả camera và point cloud. | ?nh minh h?a hi?n t??ng che khu?t; ch? g?n h?p cho ph?n v?t th? c? ?? c?n c?. |
+| Bóng che | `s02f02`; ảnh CVAT `t4-1-bong-che.png` | Xe buýt trong camera che một phần xe/vùng phía sau; quan sát cả camera và point cloud. | Ảnh minh họa hiện tượng che khuất; chỉ gán hộp cho phần vật thể có đủ căn cứ. |
 | Thưa ở xa | `s02f28`, Car #3 (CVAT ID #39); Bảng A và ảnh CVAT người học cung cấp | Xe xa nhất cách LiDAR 45,99 m, có 63 returns trong hộp; point cloud thưa hơn rõ so với xe gần. | Ảnh CVAT cho thấy cuboid và các view 3D/Top/Side/Front; không nới hộp để gom các returns ngoài xe. Ảnh này đã lưu thành `t4-2-thua-o-xa.png`. |
 | Phản xạ thấp / ít returns | `s01f01`; ảnh CVAT `t4-3-phan-xa-thap.png` | Vùng được khoanh có returns LiDAR thưa; ảnh camera cần được đối chiếu để xác định vật thể. Không thể kết luận riêng do phản xạ thấp; xa/che khuất cũng có thể là nguyên nhân. | Dùng làm ví dụ vùng ít returns, ghi nguyên nhân là giả thuyết. |
-| Điểm lạ | `s02f28`; ảnh CVAT `t4-4-diem-la.png` | Khung đỏ khoanh một patch returns cô lập cần kiểm tra; chỉ xem là ứng viên, chưa xác nhận ch?c l? nhi?u hay v?t th? nh?. | Không tạo cuboid cho các return này. |
+| Điểm lạ | `s02f28`; ảnh CVAT `t4-4-diem-la.png` | Khung đỏ khoanh một patch returns cô lập cần kiểm tra; chỉ xem là ứng viên, chưa xác nhận chắc là nhiễu hay vật thể nhỏ. | Không tạo cuboid cho các return này. |
 
 ## 5. Số từ cuboid của tôi (Bước 5)
 
@@ -90,4 +90,4 @@ Nhãn 3D dùng mét vì vị trí, kích thước và khoảng cách cần cùng
 
 ### Ảnh minh chứng cần lưu trong `report/individual/images/`
 
-Trong thư mục hiện có 11 file ảnh: bốn ảnh T1; ba ảnh T2; và bốn ảnh T4 (`t4-1-bong-che.png` frame `s02f02`, `t4-2-thua-o-xa.png` frame `s02f28`, `t4-3-phan-xa-thap.png` frame `s01f01`, `t4-4-diem-la.png` frame `s02f28`). Hai ảnh Top T1 có chú thích hướng. Các khoanh đỏ trên T4-3/T4-4 là vùng ứng viên để thảo luận; không khẳng định nguyên nhân cảm biến. Ảnh Cyclist dự phòng được lưu ngoài thư mục nộp. ?nh xem tr??c trong `work/xem/` kh?ng thay th? ?nh CVAT.
+Trong thư mục hiện có 11 file ảnh: bốn ảnh T1; ba ảnh T2; và bốn ảnh T4 (`t4-1-bong-che.png` frame `s02f02`, `t4-2-thua-o-xa.png` frame `s02f28`, `t4-3-phan-xa-thap.png` frame `s01f01`, `t4-4-diem-la.png` frame `s02f28`). Hai ảnh Top T1 có chú thích hướng. Các khoanh đỏ trên T4-3/T4-4 là vùng ứng viên để thảo luận; không khẳng định nguyên nhân cảm biến. Ảnh Cyclist dự phòng được lưu ngoài thư mục nộp. Ảnh xem trước trong `work/xem/` không thay thế ảnh CVAT.
